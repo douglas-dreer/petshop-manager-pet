@@ -66,7 +66,7 @@ class EspecieController(
         )
     }
 
-    private fun preValidacaoEspecieParaAtualizar(id: Int, especieId: AtualizarEspecieRequest): Unit {
+    private fun preValidacaoEspecieParaAtualizar(id: Int, especieId: AtualizarEspecieRequest) {
         if (id.equals(especieId.id).not()) {
             throw EspecieCamposInvalidosException("O campo(s) passados estão em branco, nulos ou são inválidos")
         }

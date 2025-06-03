@@ -12,5 +12,5 @@ interface EspecieService {
     fun buscarEspeciePorId(id: Int): EspecieDTO?
     fun criarEspecie(especie: CriarEspecieRequest): EspecieDTO
     fun atualizarEspecie(especie: AtualizarEspecieRequest): EspecieDTO
-    fun deletarEspecie(id: Int): Unit
+    fun deletarEspecie(id: Int)
 }

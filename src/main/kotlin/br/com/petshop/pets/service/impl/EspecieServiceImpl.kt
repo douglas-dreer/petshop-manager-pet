@@ -54,12 +54,12 @@ class EspecieServiceImpl(
             .toDTO()
     }
 
-    override fun deletarEspecie(id: Int): Unit {
+    override fun deletarEspecie(id: Int) {
         validarEspecieAntesDeDeletar(id)
         especieRepository.deleteById(id)
     }
 
-    fun validarEspecieAntesDeDeletar(id: Int): Unit {
+    fun validarEspecieAntesDeDeletar(id: Int) {
         if (!id.isPositive()) {
             throw EspecieCamposInvalidosException("O valor $id é inválido para o campo id" )
         }
@@ -70,13 +70,13 @@ class EspecieServiceImpl(
 
     }
 
-    fun validarEspecieAntesDeSalvar(especie: Especie): Unit {
+    fun validarEspecieAntesDeSalvar(especie: Especie) {
         if (verificarSeExistePorNome(especie.nome)) {
             throw EspecieJaRegistradaException("Essa especie já está cadastrada no sistema")
         }
     }
 
-    fun validarEspecieAntesDeAtualizar(especie: Especie): Unit {
+    fun validarEspecieAntesDeAtualizar(especie: Especie) {
         if (!verificarSeJaExistePorId(especie.id)) {
             throw EspecieNaoEncontradaException("Não foi encontrada nenhuma especie com o id ${especie.id}")
         }

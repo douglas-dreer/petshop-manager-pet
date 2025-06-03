@@ -12,7 +12,6 @@ import br.com.petshop.pets.exception.EspecieJaRegistradaException
 import br.com.petshop.pets.exception.EspecieNaoEncontradaException
 import br.com.petshop.pets.factory.EspecieFactory
 import br.com.petshop.pets.repository.EspecieRepository
-import jakarta.persistence.Entity
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
@@ -28,12 +27,11 @@ import org.mockito.kotlin.whenever
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
-import java.util.Optional
+import java.util.*
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
-import kotlin.test.assertTrue
 
 @ExtendWith(MockitoExtension::class)
 class EspecieServiceImplTest() {

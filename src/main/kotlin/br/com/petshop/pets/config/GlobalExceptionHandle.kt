@@ -25,7 +25,7 @@ class GlobalExceptionHandle {
     }
 
     @ExceptionHandler(EspecieCamposInvalidosException::class)
-    fun handleEspecieCampoInválido(ex: EspecieCamposInvalidosException): ResponseEntity<ErroResponse> {
+    fun handleEspecieCampoInvalido(ex: EspecieCamposInvalidosException): ResponseEntity<ErroResponse> {
         val error = ErroResponse(400, "Campo inválido:", ex.localizedMessage, LocalDateTime.now())
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error)
     }
