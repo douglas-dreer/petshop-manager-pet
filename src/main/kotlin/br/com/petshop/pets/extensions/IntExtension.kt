@@ -14,4 +14,3 @@ package br.com.petshop.pets.extensions
  * ```
  */
 fun Int.isPositive() = this > 0
-fun Int.isDifferentThan(other: Int) = this != other
