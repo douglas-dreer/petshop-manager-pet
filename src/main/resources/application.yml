@@ -1,3 +1,6 @@
+server:
+  servlet:
+    context-path: /v1
 spring:
   application:
     name: gerenciamento-pets
@@ -17,3 +20,12 @@ spring:
   sql:
     init:
       mode: always
+# Configuração simplificada do Springdoc
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    disable-swagger-default-url: true
+  api-docs:
+    path: /v3/api-docs
+    enabled: true
+  packages-to-scan: br.com.petshop.pets.controller
