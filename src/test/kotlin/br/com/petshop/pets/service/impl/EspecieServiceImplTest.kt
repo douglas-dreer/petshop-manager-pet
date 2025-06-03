@@ -82,7 +82,7 @@ class EspecieServiceImplTest() {
         val especieList: List<Especie> = listOf(entity)
         whenever(repository.findAllByNome(anyString())).thenReturn(especieList)
 
-        val resultado = assertThrows<EspecieJaRegistradaException> {
+        assertThrows<EspecieJaRegistradaException> {
             service.criarEspecie(criarEspecieRequest)
         }
 
