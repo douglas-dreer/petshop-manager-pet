@@ -5,17 +5,14 @@ import br.com.petshop.pets.controller.request.CriarEspecieRequest
 import br.com.petshop.pets.controller.response.EspecieResponse
 import br.com.petshop.pets.controller.response.PaginacaoResponse
 import br.com.petshop.pets.dto.EspecieDTO
-import br.com.petshop.pets.entity.Especie
-import br.com.petshop.pets.exception.EspecieCamposInvalidosException
-import br.com.petshop.pets.exception.EspecieJaRegistradaException
 import br.com.petshop.pets.exception.EspecieNaoEncontradaException
-import br.com.petshop.pets.extensions.isPositive
 import br.com.petshop.pets.mapper.toDTO
 import br.com.petshop.pets.mapper.toEntity
 import br.com.petshop.pets.mapper.toPaginacaoResponse
 import br.com.petshop.pets.mapper.toResponse
 import br.com.petshop.pets.repository.EspecieRepository
 import br.com.petshop.pets.service.EspecieService
+import br.com.petshop.pets.validate.EspecieValidate
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
@@ -29,6 +26,7 @@ import org.springframework.stereotype.Service
  */
 @Service
 class EspecieServiceImpl(
+    private val especieValidate: EspecieValidate,
     private val especieRepository: EspecieRepository
 ) : EspecieService {
     /**
@@ -73,7 +71,7 @@ class EspecieServiceImpl(
      * @return EspecieDTO criada
      */
     override fun criarEspecie(especie: CriarEspecieRequest): EspecieDTO {
-        validarEspecieAntesDeSalvar(especie.toEntity())
+        especieValidate.validarEspecieAntesDeSalvar(especie.toEntity())
         return especieRepository
             .save(especie.toEntity())
             .toDTO()
@@ -86,7 +84,7 @@ class EspecieServiceImpl(
      * @return EspecieDTO atualizada
      */
     override fun atualizarEspecie(especie: AtualizarEspecieRequest): EspecieDTO {
-        validarEspecieAntesDeAtualizar(especie.toEntity())
+        especieValidate.validarEspecieAntesDeAtualizar(especie.toEntity())
         return especieRepository
             .save(especie.toEntity())
             .toDTO()
@@ -98,61 +96,11 @@ class EspecieServiceImpl(
      * @param id ID da espécie a ser removida
      */
     override fun deletarEspecie(id: Int) {
-        validarEspecieAntesDeDeletar(id)
+        especieValidate.validarEspecieAntesDeDeletar(id)
         especieRepository.deleteById(id)
     }
 
-    /**
-     * Valida uma espécie antes de deletar.
-     *
-     * @param id ID da espécie
-     * @throws EspecieCamposInvalidosException se o ID for inválido
-     * @throws EspecieNaoEncontradaException se a espécie não existir
-     */
-    fun validarEspecieAntesDeDeletar(id: Int) {
-        if (!id.isPositive()) {
-            throw EspecieCamposInvalidosException("O valor $id é inválido para o campo id")
-        }
 
-        if (!verificarSeJaExistePorId(id)) {
-            throw EspecieNaoEncontradaException("Não foi encontrada nenhuma especie com o id $id")
-        }
-
-    }
-
-    /**
-     * Valida uma espécie antes de salvar.
-     *
-     * @param especie Espécie a ser validada
-     * @throws EspecieJaRegistradaException se já existir espécie com mesmo nome
-     */
-    fun validarEspecieAntesDeSalvar(especie: Especie) {
-        if (verificarSeExistePorNome(especie.nome)) {
-            throw EspecieJaRegistradaException("Essa especie já está cadastrada no sistema")
-        }
-    }
-
-    /**
-     * Valida uma espécie antes de atualizar.
-     *
-     * @param especie Espécie a ser validada
-     * @throws EspecieNaoEncontradaException se a espécie não existir
-     */
-    fun validarEspecieAntesDeAtualizar(especie: Especie) {
-        if (!verificarSeJaExistePorId(especie.id)) {
-            throw EspecieNaoEncontradaException("Não foi encontrada nenhuma especie com o id ${especie.id}")
-        }
-    }
-
-    /**
-     * Verifica se existe espécie com o nome informado.
-     *
-     * @param nome Nome a ser verificado
-     * @return true se existir, false caso contrário
-     */
-    fun verificarSeExistePorNome(nome: String): Boolean {
-        return especieRepository.findAllByNome(nome).isNotEmpty()
-    }
 
     /**
      * Verifica se existe espécie com o ID informado.
