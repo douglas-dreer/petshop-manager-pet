@@ -1,8 +1,11 @@
 package br.com.petshop.pets.validate
 
+import br.com.petshop.pets.controller.request.AtualizarEspecieRequest
+import br.com.petshop.pets.controller.request.AtualizarRacaRequest
 import br.com.petshop.pets.entity.Raca
 import br.com.petshop.pets.exception.EspecieCamposInvalidosException
 import br.com.petshop.pets.exception.EspecieNaoEncontradaException
+import br.com.petshop.pets.exception.RacaCamposInvalidosException
 import br.com.petshop.pets.exception.RacaJaRegistradaException
 import br.com.petshop.pets.exception.RacaNaoEncontradaException
 import br.com.petshop.pets.extensions.isPositive
@@ -100,6 +103,23 @@ class RacaValidate(
 
         if (!racaExiste) {
             throw RacaNaoEncontradaException("A raça com o id: $racaId não foi encontrada")
+        }
+    }
+
+    /**
+     * Realiza uma pré-validação para verificar se os dados informados para a alteração de uma raça são consistentes.
+     *
+     * Essa validação assegura que o identificador da raça a ser alterada corresponde ao identificador
+     * presente na requisição de atualização.
+     *
+     * @param racaId Identificador único da raça a ser alterada.
+     * @param atualizarRacaRequest Requisição contendo os dados para atualização da raça.
+     * @throws RacaCamposInvalidosException se o identificador da raça não corresponder ao informado na requisição.
+     */
+    fun preValidarRacaPraAlteracao(racaId: Int, atualizarRacaRequest: AtualizarRacaRequest) {
+        val codigoSaoIguais: Boolean = racaId.equals(atualizarRacaRequest.id)
+        if (codigoSaoIguais.not()) {
+            throw RacaCamposInvalidosException("Os dados passados não são correspondentes")
         }
     }
 }
