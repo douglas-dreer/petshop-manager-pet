@@ -20,26 +20,58 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 
+/**
+ * Implementação dos serviços relacionados a Especie.
+ *
+ * Essa classe provê operações CRUD e validações para entidades do tipo Especie.
+ *
+ * @property especieRepository Repositório para acessar dados de Especie
+ */
 @Service
 class EspecieServiceImpl(
-   private val especieRepository: EspecieRepository
-): EspecieService {
+    private val especieRepository: EspecieRepository
+) : EspecieService {
+    /**
+     * Lista todas as espécies cadastradas.
+     *
+     * @return Lista de EspecieDTO
+     */
     override fun listarEspecies(): List<EspecieDTO> {
         return especieRepository.findAll().map { it.toDTO() }
     }
 
+    /**
+     * Lista espécies com paginação.
+     *
+     * @param pagina Número da página desejada
+     * @param tamanho Quantidade de itens por página
+     * @return Resposta paginada contendo as espécies
+     */
     override fun listarEspeciesComPaginacao(pagina: Int, tamanho: Int): PaginacaoResponse<EspecieResponse> {
         val pageable = PageRequest.of(pagina, tamanho)
         val resultado: Page<EspecieResponse> = especieRepository.findAll(pageable).map { it.toResponse() }
         return resultado.toPaginacaoResponse()
     }
 
+    /**
+     * Busca uma espécie pelo ID.
+     *
+     * @param id ID da espécie
+     * @return EspecieDTO encontrada
+     * @throws EspecieNaoEncontradaException se a espécie não for encontrada
+     */
     override fun buscarEspeciePorId(id: Int): EspecieDTO? {
         return especieRepository.findById(id)
             .orElseThrow { EspecieNaoEncontradaException("Não foi encontrada nenhum registro com o id $id") }
             .toDTO()
     }
 
+    /**
+     * Cria uma nova espécie.
+     *
+     * @param especie Dados da espécie a ser criada
+     * @return EspecieDTO criada
+     */
     override fun criarEspecie(especie: CriarEspecieRequest): EspecieDTO {
         validarEspecieAntesDeSalvar(especie.toEntity())
         return especieRepository
@@ -47,6 +79,12 @@ class EspecieServiceImpl(
             .toDTO()
     }
 
+    /**
+     * Atualiza uma espécie existente.
+     *
+     * @param especie Dados da espécie a ser atualizada
+     * @return EspecieDTO atualizada
+     */
     override fun atualizarEspecie(especie: AtualizarEspecieRequest): EspecieDTO {
         validarEspecieAntesDeAtualizar(especie.toEntity())
         return especieRepository
@@ -54,14 +92,26 @@ class EspecieServiceImpl(
             .toDTO()
     }
 
+    /**
+     * Remove uma espécie pelo ID.
+     *
+     * @param id ID da espécie a ser removida
+     */
     override fun deletarEspecie(id: Int) {
         validarEspecieAntesDeDeletar(id)
         especieRepository.deleteById(id)
     }
 
+    /**
+     * Valida uma espécie antes de deletar.
+     *
+     * @param id ID da espécie
+     * @throws EspecieCamposInvalidosException se o ID for inválido
+     * @throws EspecieNaoEncontradaException se a espécie não existir
+     */
     fun validarEspecieAntesDeDeletar(id: Int) {
         if (!id.isPositive()) {
-            throw EspecieCamposInvalidosException("O valor $id é inválido para o campo id" )
+            throw EspecieCamposInvalidosException("O valor $id é inválido para o campo id")
         }
 
         if (!verificarSeJaExistePorId(id)) {
@@ -70,22 +120,46 @@ class EspecieServiceImpl(
 
     }
 
+    /**
+     * Valida uma espécie antes de salvar.
+     *
+     * @param especie Espécie a ser validada
+     * @throws EspecieJaRegistradaException se já existir espécie com mesmo nome
+     */
     fun validarEspecieAntesDeSalvar(especie: Especie) {
         if (verificarSeExistePorNome(especie.nome)) {
             throw EspecieJaRegistradaException("Essa especie já está cadastrada no sistema")
         }
     }
 
+    /**
+     * Valida uma espécie antes de atualizar.
+     *
+     * @param especie Espécie a ser validada
+     * @throws EspecieNaoEncontradaException se a espécie não existir
+     */
     fun validarEspecieAntesDeAtualizar(especie: Especie) {
         if (!verificarSeJaExistePorId(especie.id)) {
             throw EspecieNaoEncontradaException("Não foi encontrada nenhuma especie com o id ${especie.id}")
         }
     }
 
+    /**
+     * Verifica se existe espécie com o nome informado.
+     *
+     * @param nome Nome a ser verificado
+     * @return true se existir, false caso contrário
+     */
     fun verificarSeExistePorNome(nome: String): Boolean {
         return especieRepository.findAllByNome(nome).isNotEmpty()
     }
 
+    /**
+     * Verifica se existe espécie com o ID informado.
+     *
+     * @param id ID a ser verificado
+     * @return true se existir, false caso contrário
+     */
     fun verificarSeJaExistePorId(id: Int): Boolean {
         return especieRepository.existsById(id)
     }
