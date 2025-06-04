@@ -15,5 +15,5 @@ data class AtualizarRacaRequest(
     @NotNull val id: Int,
     val nome: String,
     @NotNull @NotBlank
-    val especie: Especie
+    val especie: EspecieRequest
 )
