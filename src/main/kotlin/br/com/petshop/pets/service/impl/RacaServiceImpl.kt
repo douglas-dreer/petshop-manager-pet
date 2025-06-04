@@ -3,7 +3,6 @@ package br.com.petshop.pets.service.impl
 import br.com.petshop.pets.assembler.RacaAssembler
 import br.com.petshop.pets.controller.request.AtualizarRacaRequest
 import br.com.petshop.pets.controller.request.CriarRacaRequest
-import br.com.petshop.pets.controller.response.EspecieResponse
 import br.com.petshop.pets.controller.response.PaginacaoResponse
 import br.com.petshop.pets.controller.response.RacaResponse
 import br.com.petshop.pets.dto.RacaDTO
