@@ -4,6 +4,7 @@ import br.com.petshop.pets.controller.response.ErroResponse
 import br.com.petshop.pets.exception.EspecieCamposInvalidosException
 import br.com.petshop.pets.exception.EspecieJaRegistradaException
 import br.com.petshop.pets.exception.EspecieNaoEncontradaException
+import br.com.petshop.pets.exception.RacaCamposInvalidosException
 import br.com.petshop.pets.exception.RacaJaRegistradaException
 import br.com.petshop.pets.exception.RacaNaoEncontradaException
 import org.springframework.http.HttpStatus
@@ -58,7 +59,12 @@ class GlobalExceptionHandle {
      * @param ex A exceção capturada
      * @return ResponseEntity contendo informações do erro
      */
-    @ExceptionHandler(EspecieCamposInvalidosException::class)
+    @ExceptionHandler(
+        value = [
+                    EspecieCamposInvalidosException::class,
+                    RacaCamposInvalidosException::class
+                ]
+        )
     fun handleEspecieCampoInvalido(ex: EspecieCamposInvalidosException): ResponseEntity<ErroResponse> {
         val error = ErroResponse(400, "Campo inválido:", ex.localizedMessage, LocalDateTime.now())
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error)
