@@ -2,6 +2,7 @@ package br.com.petshop.pets.mapper
 
 import br.com.petshop.pets.controller.request.AtualizarEspecieRequest
 import br.com.petshop.pets.controller.request.CriarEspecieRequest
+import br.com.petshop.pets.controller.request.EspecieRequest
 import br.com.petshop.pets.controller.response.EspecieResponse
 import br.com.petshop.pets.controller.response.EspecieResumeResponse
 import br.com.petshop.pets.dto.EspecieDTO
@@ -49,5 +50,28 @@ fun Especie.toResponse(): EspecieResponse = EspecieResponse(
 fun EspecieDTO.toResumeResponse(): EspecieResumeResponse = EspecieResumeResponse(
     nome = this.nome,
     icone = this.icone,
+)
 
+fun EspecieResponse.toEntity(): Especie = Especie(
+    id = this.id,
+    nome = this.nome,
+    icone = this.icone,
+    dataCriacao =  this.dataCriacao,
+    dataModificacao = this.dataModificacao,
+)
+
+fun EspecieResumeResponse.toEntity(): Especie = Especie(
+    id = 0,
+    nome = this.nome,
+    icone = this.icone,
+    dataCriacao = LocalDateTime.now(),
+    dataModificacao = null
+)
+
+fun EspecieRequest.toEntity(): Especie = Especie(
+    id = this.id,
+    nome = "",
+    icone = null,
+    dataCriacao = null,
+    dataModificacao = null
 )
