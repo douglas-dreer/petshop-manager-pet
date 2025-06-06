@@ -44,21 +44,7 @@ class RacaValidate(
      * @throws EspecieNaoEncontradaException se a espécie associada não existir
      */
     fun validarRacaParaInserir(raca: Raca) {
-        val nomeJaCadastrado: Boolean = repository.findRacaByNome(raca.nome) != null
-        val especieIdInvalido: Boolean = !raca.especie.id.isPositive()
-        val especieExiste: Boolean = especieService.buscarEspeciePorId(raca.especie.id) != null
-
-        if (nomeJaCadastrado) {
-            throw RacaJaRegistradaException("Raça com o nome ${raca.nome} já está cadastrada no sistema")
-        }
-
-        if (especieIdInvalido) {
-            throw EspecieCamposInvalidosException("O valor ${raca.especie.id} é inválido para o campo id")
-        }
-
-        if (!especieExiste) {
-            throw EspecieNaoEncontradaException("Não foi encontrada nenhuma especie com o id ${raca.especie.id}")
-        }
+        validarDadosComuns(raca)
     }
 
     /**
@@ -75,21 +61,7 @@ class RacaValidate(
      * @throws EspecieNaoEncontradaException se a espécie associada não existir
      */
     fun validarRacaParaAtualizar(raca: Raca) {
-        val nomeJaCadastrado: Boolean = repository.findRacaByNome(raca.nome) != null
-        val especieIdInvalido: Boolean = !raca.especie.id.isPositive()
-        val especieExiste: Boolean = especieService.buscarEspeciePorId(raca.especie.id) != null
-
-        if (nomeJaCadastrado) {
-            throw RacaJaRegistradaException("Raça com o nome ${raca.nome} já está cadastrada no sistema")
-        }
-
-        if (especieIdInvalido) {
-            throw EspecieCamposInvalidosException("O valor ${raca.especie.id} é inválido para o campo id")
-        }
-
-        if (!especieExiste) {
-            throw EspecieNaoEncontradaException("Não foi encontrada nenhuma especie com o id ${raca.especie.id}")
-        }
+       validarDadosComuns(raca)
     }
 
     /**
@@ -120,6 +92,24 @@ class RacaValidate(
         val codigoSaoIguais: Boolean = racaId.equals(atualizarRacaRequest.id)
         if (codigoSaoIguais.not()) {
             throw RacaCamposInvalidosException("Os dados passados não são correspondentes")
+        }
+    }
+
+    private fun validarDadosComuns(raca: Raca) {
+        val nomeJaCadastrado: Boolean = repository.findRacaByNome(raca.nome) != null
+        val especieIdInvalido: Boolean = !raca.especie.id.isPositive()
+        val especieExiste: Boolean = especieService.buscarEspeciePorId(raca.especie.id) != null
+
+        if (nomeJaCadastrado) {
+            throw RacaJaRegistradaException("Raça com o nome ${raca.nome} já está cadastrada no sistema")
+        }
+
+        if (especieIdInvalido) {
+            throw EspecieCamposInvalidosException("O valor ${raca.especie.id} é inválido para o campo id")
+        }
+
+        if (!especieExiste) {
+            throw EspecieNaoEncontradaException("Não foi encontrada nenhuma especie com o id ${raca.especie.id}")
         }
     }
 }
