@@ -64,5 +64,15 @@ class RacaFactory {
                 especie = EspecieRequest(1)
             )
         }
+
+        fun criarEntityComEspecie(especie: Especie): Raca {
+            return Raca(
+                id = 1,
+                nome = "Labrador",
+                especie = especie,
+                dataCriacao = LocalDateTime.now().minusDays(7),
+                dataModificacao = LocalDateTime.now(),
+            )
+        }
     }
 }
