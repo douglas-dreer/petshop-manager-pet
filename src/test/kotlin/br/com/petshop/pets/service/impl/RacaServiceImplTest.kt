@@ -67,7 +67,7 @@ class RacaServiceImplTest() {
         val resultado = service.buscarRacaPorId(id)
 
         assertNotNull(resultado)
-        assertEquals(id, resultado?.id)
+        assertEquals(id, resultado.id)
 
         verify(repository, times(1)).findById(any())
     }
@@ -96,7 +96,7 @@ class RacaServiceImplTest() {
     }
 
     @Test
-    fun `deve retornar sucesso quando buscar uma lista de racas com paginação`() {
+    fun `deve retornar sucesso quando buscar uma lista de racas com paginacao`() {
         whenever(repository.findAll(any<Pageable>())).thenReturn(paginacao)
 
         val resultado = service.listarRacasComPaginacao(PAGINA, TAMANHO)
@@ -126,8 +126,6 @@ class RacaServiceImplTest() {
 
     @Test
     fun `deve retornar sucesso quando atualizar uma raca`() {
-        val id = entity.id
-
         whenever(racaAssembler.toEntity(any<AtualizarRacaRequest>())).thenReturn(entity)
         doNothing().whenever(validate).validarRacaParaAtualizar(any())
         whenever(repository.save(any<Raca>())).thenReturn(entity)
