@@ -45,5 +45,15 @@ class EspecieFactory {
         fun criarObjetoParaAtualizar(): AtualizarEspecieRequest {
             return AtualizarEspecieRequest(id = 1, nome = "Felino", icone = "felino.png")
         }
+
+        /**
+         * Cria uma instância de EspecieDTO com o ID fornecido e valores predefinidos para os demais campos.
+         *
+         * @param id O identificador único da espécie a ser atribuída ao DTO.
+         * @return Uma instância de EspecieDTO contendo o ID fornecido, além de um nome e ícone predefinidos.
+         */
+        fun criarDTOComId(id: Int): EspecieDTO {
+            return EspecieDTO(id, "Felino", "felino.png")
+        }
     }
 }
