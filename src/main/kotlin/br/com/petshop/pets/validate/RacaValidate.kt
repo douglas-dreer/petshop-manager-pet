@@ -1,13 +1,8 @@
 package br.com.petshop.pets.validate
 
-import br.com.petshop.pets.controller.request.AtualizarEspecieRequest
 import br.com.petshop.pets.controller.request.AtualizarRacaRequest
 import br.com.petshop.pets.entity.Raca
-import br.com.petshop.pets.exception.EspecieCamposInvalidosException
-import br.com.petshop.pets.exception.EspecieNaoEncontradaException
-import br.com.petshop.pets.exception.RacaCamposInvalidosException
-import br.com.petshop.pets.exception.RacaJaRegistradaException
-import br.com.petshop.pets.exception.RacaNaoEncontradaException
+import br.com.petshop.pets.exception.*
 import br.com.petshop.pets.extensions.isPositive
 import br.com.petshop.pets.repository.RacaRepository
 import br.com.petshop.pets.service.EspecieService

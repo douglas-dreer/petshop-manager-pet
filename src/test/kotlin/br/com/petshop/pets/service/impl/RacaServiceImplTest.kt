@@ -4,10 +4,8 @@ import br.com.petshop.pets.assembler.RacaAssembler
 import br.com.petshop.pets.controller.request.AtualizarRacaRequest
 import br.com.petshop.pets.controller.request.CriarRacaRequest
 import br.com.petshop.pets.dto.RacaDTO
-import br.com.petshop.pets.entity.Especie
 import br.com.petshop.pets.entity.Raca
 import br.com.petshop.pets.exception.EspecieNaoEncontradaException
-import br.com.petshop.pets.factory.EspecieFactory
 import br.com.petshop.pets.factory.RacaFactory
 import br.com.petshop.pets.repository.RacaRepository
 import br.com.petshop.pets.validate.RacaValidate
@@ -16,15 +14,10 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.assertNotNull
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.ArgumentMatchers.anyString
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
-import org.mockito.kotlin.any
-import org.mockito.kotlin.doNothing
-import org.mockito.kotlin.times
-import org.mockito.kotlin.verify
-import org.mockito.kotlin.whenever
+import org.mockito.kotlin.*
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
