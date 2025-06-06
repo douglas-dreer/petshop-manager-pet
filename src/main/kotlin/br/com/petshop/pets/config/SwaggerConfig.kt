@@ -6,10 +6,16 @@ import io.swagger.v3.oas.models.servers.Server
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
-
-
+/**
+ * Configuração do Swagger/OpenAPI para documentação da API
+ */
 @Configuration
 class SwaggerConfig {
+    /**
+     * Configura a documentação OpenAPI do Pet Shop
+     *
+     * @return OpenAPI configurada com informações do Pet Shop
+     */
     @Bean
     fun petShopSwagger(): OpenAPI {
         val serverList = listOf(

@@ -33,6 +33,9 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
 
+/**
+ * Testes unitários para o serviço de Especie.
+ */
 @ExtendWith(MockitoExtension::class)
 class EspecieServiceImplTest() {
 
@@ -51,6 +54,9 @@ class EspecieServiceImplTest() {
     private val TAMANHO: Int = 10
 
 
+    /**
+     * Configura o ambiente para os testes.
+     */
     @BeforeEach
     fun setup() {
         dto = EspecieFactory.criarDTO()
@@ -64,6 +70,9 @@ class EspecieServiceImplTest() {
 
     }
 
+    /**
+     * Testa a criação de uma espécie com sucesso.
+     */
     @Test
     fun `deve retornar sucesso quando criar uma especie`() {
         whenever(repository.save(any())).thenReturn(entity)
@@ -77,6 +86,9 @@ class EspecieServiceImplTest() {
         verify(repository, times(1)).save(any())
     }
 
+    /**
+     * Testa a tentativa de criação de uma espécie com nome já existente.
+     */
     @Test
     fun `deve retornar EspecieJaRegistradaException quando salva com um nome ja existente `() {
         val especieList: List<Especie> = listOf(entity)
@@ -89,6 +101,9 @@ class EspecieServiceImplTest() {
         verify(repository, times(1)).findAllByNome(anyString())
     }
 
+    /**
+     * Testa a listagem de espécies sem paginação.
+     */
     @Test
     fun `deve retornar sucesso quando listar sem paginacao especies`() {
         whenever(repository.findAll()).thenReturn(listOf(entity))
@@ -101,6 +116,9 @@ class EspecieServiceImplTest() {
         verify(repository, times(1)).findAll()
     }
 
+    /**
+     * Testa a listagem de espécies com paginação.
+     */
     @Test
     fun `deve retornar sucesso quando listar com paginacao especies` () {
         whenever(repository.findAll(any<Pageable>())).thenReturn(paginacao)
@@ -113,6 +131,9 @@ class EspecieServiceImplTest() {
         verify(repository, times(1)).findAll(any<Pageable>())
     }
 
+    /**
+     * Testa a busca de uma espécie por ID com sucesso.
+     */
     @Test
     fun `deve retornar sucesso quando buscar especie por id`() {
         val id = entity.id
@@ -126,6 +147,9 @@ class EspecieServiceImplTest() {
         verify(repository, times(1)).findById(any())
     }
 
+    /**
+     * Testa a busca de uma espécie por ID inexistente.
+     */
     @Test
     fun `deve retornar EspecieNaoEncontada qunado buscar por id e nao encontrar` () {
         val id = entity.id
@@ -138,6 +162,9 @@ class EspecieServiceImplTest() {
         verify(repository, times(1)).findById(any())
     }
 
+    /**
+     * Testa a atualização de uma espécie com sucesso.
+     */
     @Test
     fun `deve retornar sucesso quando atualizar especie`() {
         whenever(repository.existsById(any())).thenReturn(true)
@@ -152,6 +179,9 @@ class EspecieServiceImplTest() {
         verify(repository, times(1)).save(any())
     }
 
+    /**
+     * Testa a atualização de uma espécie com ID inexistente.
+     */
     @Test
     fun `deve retornar EspecieNaoEncontrada quando atualizar especie com id nao encontrado` () {
         whenever(repository.existsById(any())).thenReturn(false)
@@ -163,6 +193,9 @@ class EspecieServiceImplTest() {
         verify(repository, times(1)).existsById(any())
     }
 
+    /**
+     * Testa a exclusão de uma espécie com sucesso.
+     */
     @Test
     fun `deve retornar sucesso quando deletar especie por id`() {
         val id: Int = entity.id
@@ -175,6 +208,9 @@ class EspecieServiceImplTest() {
         verify(repository, times(1)).deleteById(any<Int>())
     }
 
+    /**
+     * Testa a tentativa de exclusão de uma espécie com ID inexistente.
+     */
     @Test
     fun `deve retornar EspecieNaoEncontrada quando deletar especie por id e nao encontrar` () {
         val id: Int = entity.id
@@ -187,6 +223,9 @@ class EspecieServiceImplTest() {
         verify(repository, times(1)).existsById(any<Int>())
     }
 
+    /**
+     * Testa a validação de ID inválido durante a exclusão.
+     */
     @Test
     fun `deve retornar EspecieCamposInvalidosException quando o codigo id e invalido`() {
         val id: Int = -1
@@ -197,7 +236,4 @@ class EspecieServiceImplTest() {
 
         verify(repository, times(0)).deleteById(any<Int>())
     }
-
-
-
 }

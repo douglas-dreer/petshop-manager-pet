@@ -14,7 +14,7 @@ class Raca(
     @Column(name = "nome", nullable = false, unique = true)
     val nome: String,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "especie_id", nullable = false)
     val especie: Especie,
 
